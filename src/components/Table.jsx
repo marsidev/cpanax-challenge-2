@@ -1,9 +1,9 @@
 import BaseTable, { Column, SortOrder } from 'react-base-table'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import classNames from 'classnames'
 import 'react-base-table/styles.css'
 
-const defaultSort = { key: 'column-0', order: SortOrder.ASC }
+const defaultSort = { key: 'id', order: SortOrder.ASC }
 
 const generateData = _data => {
 	return _data.map(user => ({
@@ -77,14 +77,20 @@ const columns = [
 
 export const Table = ({ data: rawData }) => {
 	const [sortBy, setSortBy] = useState(defaultSort)
-	const [data, setData] = useState(generateData(rawData))
+	const defaultData = useMemo(() => sortData(generateData(rawData)), [rawData])
+	const [data, setData] = useState(defaultData)
 
-	const onColumnSort = sortBy => {
+	function sortData(data) {
 		const order = sortBy.order === SortOrder.ASC ? 1 : -1
 		const _data = [...data]
 		_data.sort((a, b) => (a[sortBy.key] > b[sortBy.key] ? order : -order))
+		return _data
+	}
+
+	function onColumnSort (sortBy) {
+		const sorted = sortData(data)
 		setSortBy(sortBy)
-		setData(_data)
+		setData(sorted)
 	}
 
 	return (
