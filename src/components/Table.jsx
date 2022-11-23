@@ -7,6 +7,7 @@ const defaultSort = { key: 'column-0', order: SortOrder.ASC }
 
 const generateData = _data => {
 	return _data.map(user => ({
+		id: user.id,
 		firstName: user.firstName,
 		lastName: user.lastName,
 		age: user.age,
