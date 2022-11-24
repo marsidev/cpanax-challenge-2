@@ -5,14 +5,15 @@ import 'react-base-table/styles.css'
 
 const defaultSort = { key: 'id', order: SortOrder.ASC }
 
-const generateData = _data => {
-	return _data.map(user => ({
+const generateData = data => {
+	return data.map(user => ({
 		id: user.id,
 		firstName: user.firstName,
 		lastName: user.lastName,
 		age: user.age,
 		username: user.username,
-		ip: user.ip
+		ip: user.ip,
+		image: user.image
 	}))
 }
 
@@ -22,7 +23,13 @@ const Age = ({ age }) => {
 		'text-yellow-500': age > 25 && age <= 45,
 		'text-orange-500': age > 45 && age <= 65,
 		'text-pink-500': age > 65
-	})}>{age}</span>
+	})}>
+		{age}
+	</span>
+}
+
+const Avatar = ({ src }) => {
+	return <span><img className='object-cover h-16 w-16' src={src} /></span>
 }
 
 const columns = [
@@ -31,7 +38,7 @@ const columns = [
 		title: 'First name',
 		dataKey: 'firstName',
 		width: 0,
-		flexGrow: 5,
+		flexGrow: 2,
 		flexShrink: 0,
 		resizable: true,
 		sortable: true,
@@ -43,7 +50,7 @@ const columns = [
 		title: 'Last name',
 		dataKey: 'lastName',
 		width: 0,
-		flexGrow: 4,
+		flexGrow: 2,
 		flexShrink: 0,
 		resizable: true,
 		sortable: true,
@@ -55,7 +62,7 @@ const columns = [
 		dataKey: 'age',
 		width: 0,
 		maxWidth: 100,
-		flexGrow: 3,
+		flexGrow: 1,
 		flexShrink: 0,
 		resizable: true,
 		sortable: true,
@@ -67,7 +74,7 @@ const columns = [
 		title: 'Username',
 		dataKey: 'username',
 		width: 0,
-		flexGrow: 2,
+		flexGrow: 1,
 		flexShrink: 0,
 		resizable: true,
 		sortable: true,
@@ -84,6 +91,18 @@ const columns = [
 		resizable: true,
 		sortable: true,
 		align: Column.Alignment.RIGHT
+	},
+	{
+		key: 'image',
+		title: 'Avatar',
+		dataKey: 'image',
+		width: 0,
+		flexGrow: 1,
+		flexShrink: 0,
+		resizable: false,
+		sortable: false,
+		align: Column.Alignment.CENTER,
+		cellRenderer: ({ cellData: src }) => <Avatar src={src} />
 	}
 ]
 
@@ -114,6 +133,7 @@ export const Table = ({ data: rawData }) => {
 						data={data}
 						fixed={false}
 						height={height}
+						rowHeight={60}
 						sortBy={sortBy}
 						width={width}
 						onColumnSort={onColumnSort}
