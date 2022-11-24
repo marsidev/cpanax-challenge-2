@@ -25,7 +25,8 @@ export const columnsData = [
 		resizable: true,
 		sortable: true,
 		frozen: Column.FrozenDirection.LEFT,
-		align: Column.Alignment.CENTER
+		align: Column.Alignment.CENTER,
+		headerClassName: 'select-none'
 	},
 	{
 		key: 'lastName',
@@ -36,7 +37,8 @@ export const columnsData = [
 		flexShrink: 0,
 		resizable: true,
 		sortable: true,
-		align: Column.Alignment.CENTER
+		align: Column.Alignment.CENTER,
+		headerClassName: 'select-none'
 	},
 	{
 		key: 'age',
@@ -49,7 +51,8 @@ export const columnsData = [
 		resizable: true,
 		sortable: true,
 		align: Column.Alignment.CENTER,
-		cellRenderer: ({ cellData: age }) => <Age age={age}>{age}</Age>
+		cellRenderer: ({ cellData: age }) => <Age age={age}>{age}</Age>,
+		headerClassName: 'select-none'
 	},
 	{
 		key: 'username',
@@ -60,7 +63,8 @@ export const columnsData = [
 		flexShrink: 0,
 		resizable: true,
 		sortable: true,
-		align: Column.Alignment.CENTER
+		align: Column.Alignment.CENTER,
+		headerClassName: 'select-none'
 	},
 	{
 		key: 'ip',
@@ -72,7 +76,8 @@ export const columnsData = [
 		flexShrink: 0,
 		resizable: true,
 		sortable: true,
-		align: Column.Alignment.RIGHT
+		align: Column.Alignment.RIGHT,
+		headerClassName: 'select-none'
 	},
 	{
 		key: 'image',
@@ -84,7 +89,8 @@ export const columnsData = [
 		resizable: false,
 		sortable: false,
 		align: Column.Alignment.CENTER,
-		cellRenderer: ({ cellData: src }) => <Avatar src={src} />
+		cellRenderer: ({ cellData: src }) => <Avatar src={src} />,
+		headerClassName: 'select-none'
 	}
 ]
 
