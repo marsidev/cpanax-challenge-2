@@ -1,4 +1,4 @@
-import BaseTable, { Column, SortOrder } from 'react-base-table'
+import BaseTable, { AutoResizer, Column, SortOrder } from 'react-base-table'
 import { useMemo, useState } from 'react'
 import classNames from 'classnames'
 import 'react-base-table/styles.css'
@@ -30,7 +30,9 @@ const columns = [
 		key: 'firstName',
 		title: 'First name',
 		dataKey: 'firstName',
-		width: 120,
+		width: 0,
+		flexGrow: 5,
+		flexShrink: 0,
 		resizable: true,
 		sortable: true,
 		frozen: Column.FrozenDirection.LEFT,
@@ -40,7 +42,9 @@ const columns = [
 		key: 'lastName',
 		title: 'Last name',
 		dataKey: 'lastName',
-		width: 120,
+		width: 0,
+		flexGrow: 4,
+		flexShrink: 0,
 		resizable: true,
 		sortable: true,
 		align: Column.Alignment.CENTER
@@ -49,7 +53,10 @@ const columns = [
 		key: 'age',
 		title: 'Age',
 		dataKey: 'age',
-		width: 80,
+		width: 0,
+		maxWidth: 100,
+		flexGrow: 3,
+		flexShrink: 0,
 		resizable: true,
 		sortable: true,
 		align: Column.Alignment.CENTER,
@@ -59,7 +66,9 @@ const columns = [
 		key: 'username',
 		title: 'Username',
 		dataKey: 'username',
-		width: 120,
+		width: 0,
+		flexGrow: 2,
+		flexShrink: 0,
 		resizable: true,
 		sortable: true,
 		align: Column.Alignment.CENTER
@@ -68,7 +77,10 @@ const columns = [
 		key: 'ip',
 		title: 'IP',
 		dataKey: 'ip',
-		width: 150,
+		width: 0,
+		maxWidth: 150,
+		flexGrow: 1,
+		flexShrink: 0,
 		resizable: true,
 		sortable: true,
 		align: Column.Alignment.RIGHT
@@ -95,7 +107,19 @@ export const Table = ({ data: rawData }) => {
 
 	return (
 		<div className='w-full'>
-			<BaseTable fixed columns={columns} data={data} height={700} sortBy={sortBy} width={650} onColumnSort={onColumnSort} />
+			<AutoResizer height={700}>
+				{({ width, height }) => (
+					<BaseTable
+						columns={columns}
+						data={data}
+						fixed={false}
+						height={height}
+						sortBy={sortBy}
+						width={width}
+						onColumnSort={onColumnSort}
+					/>
+				)}
+			</AutoResizer>
 		</div>
 	)
 }
