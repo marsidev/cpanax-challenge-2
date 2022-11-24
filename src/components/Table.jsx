@@ -1,20 +1,36 @@
-import BaseTable, { AutoResizer, SortOrder } from 'react-base-table'
-import { useEffect, useState } from 'react'
 import 'react-base-table/styles.css'
-import { columnsData, generateTableData as genData, sortTableData } from '../utils'
+import BaseTable, { AutoResizer, Column, SortOrder } from 'react-base-table'
+import { useEffect, useState } from 'react'
+import { columnsData, sortTableData } from '../utils'
 import { Loader } from '../components/Loader'
 import { EmptyContainer } from '../components/EmptyContainer'
+import { Button } from '../components/Button'
 import { fetchUsersData } from '../services'
 
 const MAX_USERS = 100
 const defaultSort = { key: 'id', order: SortOrder.ASC }
 
-export const Table = () => {
+export const Table = ({ handleOpenModal }) => {
 	const [sortBy, setSortBy] = useState(defaultSort)
-	const [data, setData] = useState([])
+	const [usersData, setUsersData] = useState([])
 	const [loading, setLoading] = useState(true)
 	const [loadingMore, setLoadingMore] = useState(false)
 	const [loadedAll, setLoadedAll] = useState(false)
+
+	const columns = [...columnsData, {
+		key: 'action',
+		width: 0,
+		flexGrow: 1,
+		flexShrink: 0,
+		align: Column.Alignment.CENTER,
+		cellRenderer: ({ rowData }) => {
+			return (
+				<Button onClick={() => handleOpenModal(rowData)}>
+					See more
+				</Button>
+			)
+		}
+	}]
 
 	useEffect(() => {
 		loadData()
@@ -29,7 +45,7 @@ export const Table = () => {
 			)
 		}
 
-		if (data.length === 0) return <EmptyContainer>No data available</EmptyContainer>
+		if (usersData.length === 0) return <EmptyContainer>No data available</EmptyContainer>
 	}
 
 	const footerRenderer = () => {
@@ -45,17 +61,16 @@ export const Table = () => {
 	async function loadData() {
 		setLoading(true)
 		const rawData = await fetchUsersData()
-		const data = genData(rawData)
-		setData(data)
+		setUsersData(rawData)
 		setLoading(false)
 	}
 
 	async function loadMore() {
 		setLoadingMore(true)
-		const rawData = await fetchUsersData(data.length) // skip={data.length}
-		const newData = genData(rawData)
-		const mergedData = [...data, ...newData]
-		setData(mergedData)
+		const rawData = await fetchUsersData(usersData.length) // skip={data.length}
+		const mergedData = [...usersData, ...rawData]
+
+		setUsersData(mergedData)
 		setLoadingMore(false)
 		setLoadedAll(mergedData.length === MAX_USERS)
 	}
@@ -66,9 +81,9 @@ export const Table = () => {
 	}
 
 	function onColumnSort (sortBy) {
-		const sorted = sortTableData(data, sortBy)
+		const sorted = sortTableData(usersData, sortBy)
 		setSortBy(sortBy)
-		setData(sorted)
+		setUsersData(sorted)
 	}
 
 	return (
@@ -76,8 +91,9 @@ export const Table = () => {
 			<AutoResizer height={700}>
 				{({ width, height }) => (
 					<BaseTable
-						columns={columnsData}
-						data={data}
+						className='shadow-lg'
+						columns={columns}
+						data={usersData}
 						disabled={loading}
 						emptyRenderer={emptyRenderer}
 						fixed={false}

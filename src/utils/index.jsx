@@ -2,18 +2,6 @@ import { Column, SortOrder } from 'react-base-table'
 import { Avatar } from '../components/Avatar'
 import { Age } from '../components/Age'
 
-export const generateTableData = data => {
-	return data.map(user => ({
-		id: user.id,
-		firstName: user.firstName,
-		lastName: user.lastName,
-		age: user.age,
-		username: user.username,
-		ip: user.ip,
-		image: user.image
-	}))
-}
-
 export const columnsData = [
 	{
 		key: 'firstName',
